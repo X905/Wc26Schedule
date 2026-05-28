@@ -3,96 +3,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Calendario de Partidos · Mundial 2026 (no oficial)</title>
+  <title>Calendario · Mundial 2026 (no oficial)</title>
   <meta
     name="description"
     content="Calendario y resultados en vivo de los partidos del torneo mundial de fútbol 2026. Proyecto independiente, no afiliado a la FIFA."
   />
-  <!-- Sin CDNs ni assets externos: tipografía del sistema y chips de código -->
-  <!-- Favicon inline (data URI) para evitar una petición a /favicon.ico -->
+  <!-- Tipografía del sistema; sin CDNs de fuentes. Las banderas nacionales son
+       de dominio público (no son IP de la FIFA): se cargan desde flagcdn. -->
   <link
     rel="icon"
-    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232f9e44'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='white' font-family='sans-serif'%3E26%3C/text%3E%3C/svg%3E"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316a34a'/%3E%3Ctext x='16' y='23' font-size='17' font-weight='700' text-anchor='middle' fill='white' font-family='sans-serif'%3E26%3C/text%3E%3C/svg%3E"
   />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header class="site-header">
-    <div class="container">
-      <p class="kicker">Proyecto independiente · datos públicos</p>
-      <h1>Calendario del Mundial de Fútbol 2026</h1>
-      <p class="subtitle">
-        Horarios y resultados de los partidos, actualizados automáticamente.
-        Las horas se muestran en tu zona horaria local.
-      </p>
-      <p class="disclaimer-inline">
-        Sitio no oficial, sin afiliación ni patrocinio de la FIFA. Marcas y
-        logotipos pertenecen a sus respectivos dueños. Consulta los
-        <a href="#legal">lineamientos de uso</a>.
-      </p>
+  <!-- Barra superior fija -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">26</span>
+        <span class="brand-text">
+          <strong>Mundial 2026</strong>
+          <small>Calendario · no oficial</small>
+        </span>
+      </a>
+      <button class="btn-ghost" id="open-legal" type="button">
+        Lineamientos
+      </button>
     </div>
   </header>
 
+  <!-- Hero -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <p class="kicker">Proyecto independiente · datos públicos</p>
+      <h1>Horarios y resultados del<br />Mundial de Fútbol 2026</h1>
+      <p class="subtitle">
+        Calendario de partidos actualizado automáticamente. Las horas se
+        muestran en tu zona horaria local.
+      </p>
+      <div class="hero-stats" aria-hidden="true">
+        <div class="stat"><b>48</b><span>selecciones</span></div>
+        <div class="stat"><b>104</b><span>partidos</span></div>
+        <div class="stat"><b>3</b><span>países sede</span></div>
+        <div class="stat"><b>11 jun</b><span>arranque</span></div>
+      </div>
+    </div>
+  </section>
+
   <main class="container">
-    <section class="controls" aria-label="Filtros y estado">
+    <!-- Controles -->
+    <div class="toolbar">
       <div class="filters" role="tablist" aria-label="Filtrar partidos">
-        <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">Todos</button>
-        <button class="filter" data-filter="live" role="tab" aria-selected="false">En vivo</button>
-        <button class="filter" data-filter="upcoming" role="tab" aria-selected="false">Próximos</button>
-        <button class="filter" data-filter="finished" role="tab" aria-selected="false">Finalizados</button>
+        <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">Todos</button>
+        <button class="chip" data-filter="live" role="tab" aria-selected="false">
+          <span class="dot"></span> En vivo
+        </button>
+        <button class="chip" data-filter="upcoming" role="tab" aria-selected="false">Próximos</button>
+        <button class="chip" data-filter="finished" role="tab" aria-selected="false">Finalizados</button>
       </div>
       <div class="status">
-        <span id="source-label" class="source-label" title="Origen de los datos">Cargando…</span>
-        <button id="refresh-btn" class="refresh-btn" title="Actualizar ahora" aria-label="Actualizar ahora">⟳</button>
-        <span id="last-updated" class="last-updated"></span>
+        <span id="source-label" class="pill-soft" title="Origen de los datos">Cargando…</span>
+        <span id="last-updated" class="muted"></span>
+        <button id="refresh-btn" class="icon-btn" title="Actualizar ahora" aria-label="Actualizar ahora">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M17.65 6.35A8 8 0 1 0 19.73 14h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/></svg>
+        </button>
       </div>
-    </section>
+    </div>
 
     <div id="state" class="state" role="status" aria-live="polite"></div>
-
     <section id="matches" class="matches" aria-label="Lista de partidos"></section>
   </main>
 
-  <section id="legal" class="legal container">
-    <h2>Lineamientos de uso y derechos de autor</h2>
-    <ul>
-      <li>
-        Este es un proyecto <strong>independiente y no oficial</strong>. No está
-        afiliado, asociado, autorizado ni patrocinado por la FIFA ni por ningún
-        organismo del torneo.
-      </li>
-      <li>
-        No se utilizan logotipos, emblemas, mascotas, tipografías oficiales ni
-        ningún material gráfico protegido. Los países se identifican con un
-        <strong>chip de código de texto</strong> (p. ej. ARG, MEX), no con
-        archivos de imagen.
-      </li>
-      <li>
-        El calendario (fechas, horas, sedes y equipos) se compone de
-        <strong>datos factuales</strong>, los cuales no son objeto de derechos
-        de autor. Los resultados en vivo provienen de APIs públicas de datos
-        deportivos; cada proveedor mantiene la titularidad de su servicio.
-      </li>
-      <li>
-        Las marcas «FIFA», «Copa Mundial», nombres de equipos y similares
-        pertenecen a sus respectivos titulares y se citan únicamente con fines
-        descriptivos e informativos.
-      </li>
-      <li>
-        Consulta <a href="GUIDELINES.md">GUIDELINES.md</a> para la guía completa
-        de cumplimiento.
-      </li>
-    </ul>
-  </section>
-
   <footer class="site-footer">
-    <div class="container">
+    <div class="container footer-inner">
       <p>
-        Hecho con datos públicos. Sin afiliación oficial. Verifica siempre los
-        horarios con la fuente oficial del torneo.
+        Sitio <strong>no oficial</strong>, sin afiliación ni patrocinio de la
+        FIFA. Verifica siempre los horarios con la fuente oficial.
       </p>
+      <button class="btn-ghost" id="open-legal-2" type="button">
+        Ver lineamientos de uso
+      </button>
     </div>
   </footer>
+
+  <!-- Modal de lineamientos -->
+  <div class="modal" id="legal-modal" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="legal-title">
+      <div class="modal-head">
+        <h2 id="legal-title">Lineamientos de uso y derechos de autor</h2>
+        <button class="icon-btn" data-close aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.88 18.3 9.17 12 2.88 5.71 4.29 4.3l6.3 6.29 6.29-6.3z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul>
+          <li>
+            Proyecto <strong>independiente y no oficial</strong>. No está
+            afiliado, asociado, autorizado ni patrocinado por la FIFA ni por
+            ningún organismo del torneo.
+          </li>
+          <li>
+            No se utilizan logotipos, emblemas, mascotas, tipografías oficiales
+            ni material gráfico protegido de la FIFA.
+          </li>
+          <li>
+            Las <strong>banderas nacionales son de dominio público</strong> (no
+            son IP de la FIFA) y se muestran con fines identificativos; si una no
+            carga, se usa un chip con el código del país como respaldo.
+          </li>
+          <li>
+            El calendario (fechas, horas, sedes y equipos) son
+            <strong>datos factuales</strong>, no sujetos a derechos de autor. Los
+            resultados provienen de APIs públicas; cada proveedor mantiene la
+            titularidad de su servicio.
+          </li>
+          <li>
+            Las marcas «FIFA», «Copa Mundial» y nombres de equipos pertenecen a
+            sus respectivos titulares y se citan con fines descriptivos.
+          </li>
+          <li>
+            Guía completa: <a href="GUIDELINES.md">GUIDELINES.md</a>.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <script src="js/app.js"></script>
 </body>

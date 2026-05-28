@@ -18,9 +18,10 @@ ofrecer una landing útil con el calendario y los resultados del Mundial 2026
 - **Nombres descriptivos**: «Mundial 2026», «torneo mundial de fútbol»,
   nombres de selecciones y estadios, citados con fin informativo (uso nominativo
   justo de la marca).
-- **Países como chip de código de texto** (ARG, MEX, FRA…): texto renderizado
-  con CSS, no archivos de imagen ni assets descargados. (Se evitó el emoji de
-  bandera porque Windows no lo incluye en su fuente y se vería en blanco.)
+- **Banderas nacionales** (dominio público): no son IP de la FIFA y pueden
+  mostrarse. Se cargan desde un proveedor de banderas de dominio público
+  (flagcdn), con un **chip de código de texto** como respaldo si la imagen no
+  carga. (Se evitó el emoji de bandera porque Windows no lo incluye en su fuente.)
 - **Datos de APIs públicas** de proveedores deportivos, respetando sus términos
   de uso y límites de peticiones.
 
@@ -37,18 +38,25 @@ ofrecer una landing útil con el calendario y los resultados del Mundial 2026
 - ❌ El símbolo de marca registrada junto a términos oficiales de forma que
   implique titularidad.
 
-## 3. Evitar llamadas a assets externos
+## 3. Política de assets externos
 
-Para reducir riesgo legal **y** mejorar privacidad/rendimiento, este proyecto:
+El objetivo es **no usar IP protegida de la FIFA**, no prohibir todo recurso
+externo. La distinción importa:
 
-- **No carga imágenes externas** (logos, escudos, banderas en PNG/SVG).
+- ❌ **Nunca** se hotlinkean ni descargan logos, emblemas, mascota, cartel,
+  tipografías oficiales ni fotografías con derechos.
+- ✅ **Sí** se muestran **banderas nacionales** (dominio público, no IP de la
+  FIFA) desde un proveedor de banderas (flagcdn). Es la única petición de
+  recursos gráficos, y degrada a un chip de texto si falla (ver `flagNode()` en
+  `js/app.js`).
 - **No usa CDNs de fuentes** (Google Fonts, etc.); solo tipografía del sistema
   (`system-ui`).
 - **No incrusta** iframes, trackers ni scripts de terceros.
-- Representa países con un **chip de código de texto** derivado del nombre de
-  la selección (ver `countryCode()` en `js/app.js`).
-- Las únicas peticiones de red salientes son **a las APIs de datos** (JSON), no
-  a recursos gráficos.
+- El resto de peticiones de red son **a las APIs de datos** (JSON).
+
+> Si prefieres **cero recursos externos**, autoaloja las banderas como SVG de
+> dominio público en `/flags` y apunta `flagNode()` a esa ruta, o desactiva las
+> imágenes para usar solo el chip de texto.
 
 ## 4. Uso correcto de las APIs de datos
 
@@ -84,7 +92,7 @@ Reglas:
 ## 6. Lista de verificación antes de publicar
 
 - [ ] Ningún logo, emblema, mascota o tipografía oficial en el repo o la página.
-- [ ] Ninguna imagen/foto con derechos; países solo por chip de código de texto.
+- [ ] Ninguna imagen/foto con derechos; solo banderas de dominio público.
 - [ ] Sin CDNs de fuentes ni assets de terceros.
 - [ ] Descargo de no afiliación visible.
 - [ ] Atribución de la fuente de datos visible.
