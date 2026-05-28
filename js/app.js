@@ -8,8 +8,9 @@
  *      equipos). Garantiza que la página nunca quede vacía sin red.
  *
  * Nota legal: el calendario son datos factuales (no protegidos por copyright).
- * No se descargan logos, emblemas ni tipografías oficiales. Las banderas se
- * dibujan con emoji Unicode -> cero llamadas a assets.
+ * No se descargan logos, emblemas ni tipografías oficiales. Los países se
+ * muestran como un chip de texto con su código (CSS + texto) -> cero llamadas
+ * a assets y compatibilidad total (Windows no incluye emojis de bandera).
  */
 (function () {
   "use strict";
@@ -39,15 +40,44 @@
 
   // --- Utilidades ----------------------------------------------------------
 
-  // Convierte un código ISO de país de 2 letras en su emoji de bandera.
-  function flagEmoji(code) {
-    if (!code || code.length !== 2) return "🏳️";
-    var cc = code.toUpperCase();
-    if (!/^[A-Z]{2}$/.test(cc)) return "🏳️";
-    return String.fromCodePoint(
-      0x1f1e6 + (cc.charCodeAt(0) - 65),
-      0x1f1e6 + (cc.charCodeAt(1) - 65)
-    );
+  // Mapa nombre de selección -> código ISO de 3 letras (para el chip de país).
+  // Evitamos emojis de bandera porque Windows no los incluye en su fuente
+  // (se verían en blanco). El chip de texto funciona en todas las plataformas
+  // sin descargar assets. Se cubren las selecciones más habituales; el resto
+  // cae a un fallback derivado del propio nombre.
+  var COUNTRY_CODES = {
+    argentina: "ARG", australia: "AUS", austria: "AUT", belgium: "BEL",
+    "bosnia-herzegovina": "BIH", "bosnia and herzegovina": "BIH", brazil: "BRA",
+    cameroon: "CMR", canada: "CAN", chile: "CHI", colombia: "COL",
+    "costa rica": "CRC", croatia: "CRO", "czech republic": "CZE", czechia: "CZE",
+    denmark: "DEN", ecuador: "ECU", egypt: "EGY", england: "ENG", france: "FRA",
+    germany: "GER", ghana: "GHA", greece: "GRE", honduras: "HON", hungary: "HUN",
+    iceland: "ISL", iran: "IRN", iraq: "IRQ", italy: "ITA",
+    "ivory coast": "CIV", "cote d'ivoire": "CIV", jamaica: "JAM", japan: "JPN",
+    jordan: "JOR", "korea republic": "KOR", "south korea": "KOR",
+    "north korea": "PRK", mexico: "MEX", morocco: "MAR", netherlands: "NED",
+    "new zealand": "NZL", nigeria: "NGA", norway: "NOR", panama: "PAN",
+    paraguay: "PAR", peru: "PER", poland: "POL", portugal: "POR",
+    qatar: "QAT", "republic of ireland": "IRL", ireland: "IRL", romania: "ROU",
+    russia: "RUS", "saudi arabia": "KSA", scotland: "SCO", senegal: "SEN",
+    serbia: "SRB", slovakia: "SVK", slovenia: "SVN", "south africa": "RSA",
+    spain: "ESP", sweden: "SWE", switzerland: "SUI", tunisia: "TUN",
+    turkey: "TUR", "turkiye": "TUR", ukraine: "UKR", "united states": "USA",
+    usa: "USA", "united states of america": "USA", uruguay: "URU",
+    venezuela: "VEN", wales: "WAL", algeria: "ALG", "cape verde": "CPV",
+    "el salvador": "SLV", guatemala: "GUA", curacao: "CUW", uzbekistan: "UZB",
+    "united arab emirates": "UAE"
+  };
+
+  // Devuelve un código de país de 2-3 letras para mostrar en el chip.
+  function countryCode(name) {
+    if (!name) return "?";
+    var key = name.trim().toLowerCase();
+    if (/^por definir$/.test(key) || key === "tbd") return "?";
+    if (COUNTRY_CODES[key]) return COUNTRY_CODES[key];
+    // Fallback: primeras 3 letras alfabéticas en mayúscula.
+    var letters = name.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
+    return (letters.slice(0, 3) || "?").toUpperCase();
   }
 
   function el(tag, cls, text) {
@@ -340,7 +370,9 @@
       opponent.score != null &&
       team.score > opponent.score;
     if (isWinner) row.classList.add("winner");
-    row.appendChild(el("span", "flag", flagEmoji(team.code)));
+    var code = el("span", "flag", countryCode(team.name));
+    code.setAttribute("title", team.name);
+    row.appendChild(code);
     row.appendChild(el("span", "name", team.name));
     if (team.score != null) row.appendChild(el("span", "score", String(team.score)));
     return row;

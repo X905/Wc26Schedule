@@ -184,7 +184,21 @@ body {
   gap: 10px;
   min-width: 0;
 }
-.team .flag { font-size: 1.2rem; width: 1.5em; text-align: center; }
+.team .flag {
+  flex: 0 0 auto;
+  min-width: 2.6em;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  font-variant-numeric: tabular-nums;
+  padding: 3px 6px;
+  border-radius: 6px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.team.winner .flag { color: var(--text); border-color: var(--accent); }
 .team .name {
   white-space: nowrap;
   overflow: hidden;
