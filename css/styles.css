@@ -1,0 +1,248 @@
+/*
+ * Estilos de la landing del calendario del Mundial 2026 (no oficial).
+ * Sin fuentes externas ni imágenes: solo tipografía del sistema y color.
+ * Esto evita llamadas de assets y reduce riesgos de propiedad intelectual.
+ */
+
+:root {
+  --bg: #0d1117;
+  --bg-elev: #161b22;
+  --bg-elev-2: #1c2230;
+  --border: #2a3240;
+  --text: #e6edf3;
+  --text-dim: #9aa7b4;
+  --accent: #2f9e44;
+  --accent-2: #1971c2;
+  --live: #e03131;
+  --radius: 12px;
+  --maxw: 980px;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.site-header {
+  background: linear-gradient(160deg, #11221a 0%, var(--bg) 70%);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 0 36px;
+}
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  color: var(--accent);
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+.site-header h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  line-height: 1.15;
+}
+.subtitle {
+  margin: 0 0 14px;
+  color: var(--text-dim);
+  max-width: 60ch;
+}
+.disclaimer-inline {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.disclaimer-inline a { color: var(--accent-2); }
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0 8px;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter {
+  background: var(--bg-elev);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+.filter:hover { color: var(--text); border-color: var(--accent); }
+.filter.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.source-label {
+  padding: 4px 10px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.refresh-btn {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+}
+.refresh-btn:hover { border-color: var(--accent); }
+.refresh-btn.spinning { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* State / messages */
+.state {
+  padding: 8px 0 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  min-height: 1.2em;
+}
+.state.error { color: #ffa8a8; }
+
+/* Matches */
+.matches { padding: 12px 0 40px; }
+.day-group { margin-bottom: 28px; }
+.day-heading {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  padding: 10px 0;
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  z-index: 2;
+}
+
+.match {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.match-time {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.match-time .hh { font-size: 1.05rem; font-weight: 600; }
+.match-time .tz { font-size: 0.65rem; color: var(--text-dim); }
+
+.match-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.team .flag { font-size: 1.2rem; width: 1.5em; text-align: center; }
+.team .name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.team .score {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.team.winner .name { font-weight: 700; }
+
+.match-meta {
+  text-align: right;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+.badge {
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.7rem;
+  border: 1px solid var(--border);
+}
+.badge.live {
+  background: rgba(224, 49, 49, 0.15);
+  color: #ff8787;
+  border-color: var(--live);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.badge.upcoming { color: var(--text-dim); }
+.badge.finished { color: var(--accent); border-color: var(--accent); }
+@keyframes pulse { 50% { opacity: 0.55; } }
+
+.venue { max-width: 22ch; }
+
+/* Legal */
+.legal { padding: 36px 0; border-top: 1px solid var(--border); }
+.legal h2 { font-size: 1.2rem; }
+.legal ul { color: var(--text-dim); padding-left: 1.1em; }
+.legal li { margin-bottom: 10px; }
+.legal a { color: var(--accent-2); }
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0 40px;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 560px) {
+  .match { grid-template-columns: 52px 1fr; }
+  .match-meta { grid-column: 1 / -1; flex-direction: row; align-items: center; justify-content: flex-start; gap: 10px; }
+  .controls { justify-content: flex-start; }
+}
