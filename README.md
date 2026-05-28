@@ -14,10 +14,11 @@ automáticamente** consultando APIs públicas de datos deportivos.
 - 🔴 Estado en vivo / programado / finalizado, con auto-refresco (60 s, o 30 s si
   hay partidos en curso).
 - 🌍 Horas mostradas en la **zona horaria local** del visitante.
-- 🚩 Países con **chip de código de texto** (ARG, MEX…), sin descargar imágenes
-  ni depender de emojis de bandera (que Windows no renderiza).
-- 🧱 **Sin assets externos**: sin CDNs, sin fuentes de terceros, sin trackers.
-  Las únicas peticiones de red son a las APIs de datos (JSON).
+- 🚩 **Banderas nacionales** (dominio público) vía flagcdn, con chip de código
+  (ARG, MEX…) como respaldo. No se usan logos ni emblemas de la FIFA.
+- 🧱 **Sin IP de la FIFA**: sin logos, emblemas, mascota ni tipografías
+  oficiales; sin CDNs de fuentes ni trackers. Las peticiones de red son a las
+  APIs de datos (JSON) y a banderas de dominio público.
 - ♻️ Cadena de respaldos: TheSportsDB → ESPN → `data/schedule.json` local.
 
 ## Cómo ejecutar

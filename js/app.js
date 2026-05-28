@@ -40,42 +40,56 @@
 
   // --- Utilidades ----------------------------------------------------------
 
-  // Mapa nombre de selección -> código ISO de 3 letras (para el chip de país).
-  // Evitamos emojis de bandera porque Windows no los incluye en su fuente
-  // (se verían en blanco). El chip de texto funciona en todas las plataformas
-  // sin descargar assets. Se cubren las selecciones más habituales; el resto
-  // cae a un fallback derivado del propio nombre.
-  var COUNTRY_CODES = {
-    argentina: "ARG", australia: "AUS", austria: "AUT", belgium: "BEL",
-    "bosnia-herzegovina": "BIH", "bosnia and herzegovina": "BIH", brazil: "BRA",
-    cameroon: "CMR", canada: "CAN", chile: "CHI", colombia: "COL",
-    "costa rica": "CRC", croatia: "CRO", "czech republic": "CZE", czechia: "CZE",
-    denmark: "DEN", ecuador: "ECU", egypt: "EGY", england: "ENG", france: "FRA",
-    germany: "GER", ghana: "GHA", greece: "GRE", honduras: "HON", hungary: "HUN",
-    iceland: "ISL", iran: "IRN", iraq: "IRQ", italy: "ITA",
-    "ivory coast": "CIV", "cote d'ivoire": "CIV", jamaica: "JAM", japan: "JPN",
-    jordan: "JOR", "korea republic": "KOR", "south korea": "KOR",
-    "north korea": "PRK", mexico: "MEX", morocco: "MAR", netherlands: "NED",
-    "new zealand": "NZL", nigeria: "NGA", norway: "NOR", panama: "PAN",
-    paraguay: "PAR", peru: "PER", poland: "POL", portugal: "POR",
-    qatar: "QAT", "republic of ireland": "IRL", ireland: "IRL", romania: "ROU",
-    russia: "RUS", "saudi arabia": "KSA", scotland: "SCO", senegal: "SEN",
-    serbia: "SRB", slovakia: "SVK", slovenia: "SVN", "south africa": "RSA",
-    spain: "ESP", sweden: "SWE", switzerland: "SUI", tunisia: "TUN",
-    turkey: "TUR", "turkiye": "TUR", ukraine: "UKR", "united states": "USA",
-    usa: "USA", "united states of america": "USA", uruguay: "URU",
-    venezuela: "VEN", wales: "WAL", algeria: "ALG", "cape verde": "CPV",
-    "el salvador": "SLV", guatemala: "GUA", curacao: "CUW", uzbekistan: "UZB",
-    "united arab emirates": "UAE"
+  // Mapa nombre de selección -> [ISO alpha-2, código de 3 letras].
+  // El alpha-2 sirve para cargar la bandera (dominio público) desde flagcdn;
+  // el de 3 letras es el chip de respaldo si la imagen no carga. Windows no
+  // tiene emojis de bandera, por eso usamos imágenes + chip de texto.
+  var COUNTRIES = {
+    argentina: ["ar", "ARG"], australia: ["au", "AUS"], austria: ["at", "AUT"],
+    belgium: ["be", "BEL"], "bosnia-herzegovina": ["ba", "BIH"],
+    "bosnia and herzegovina": ["ba", "BIH"], brazil: ["br", "BRA"],
+    cameroon: ["cm", "CMR"], canada: ["ca", "CAN"], chile: ["cl", "CHI"],
+    colombia: ["co", "COL"], "costa rica": ["cr", "CRC"], croatia: ["hr", "CRO"],
+    "czech republic": ["cz", "CZE"], czechia: ["cz", "CZE"], denmark: ["dk", "DEN"],
+    ecuador: ["ec", "ECU"], egypt: ["eg", "EGY"], england: ["gb-eng", "ENG"],
+    france: ["fr", "FRA"], germany: ["de", "GER"], ghana: ["gh", "GHA"],
+    greece: ["gr", "GRE"], honduras: ["hn", "HON"], hungary: ["hu", "HUN"],
+    iceland: ["is", "ISL"], iran: ["ir", "IRN"], iraq: ["iq", "IRQ"],
+    italy: ["it", "ITA"], "ivory coast": ["ci", "CIV"], "cote d'ivoire": ["ci", "CIV"],
+    jamaica: ["jm", "JAM"], japan: ["jp", "JPN"], jordan: ["jo", "JOR"],
+    "korea republic": ["kr", "KOR"], "south korea": ["kr", "KOR"],
+    "north korea": ["kp", "PRK"], mexico: ["mx", "MEX"], morocco: ["ma", "MAR"],
+    netherlands: ["nl", "NED"], "new zealand": ["nz", "NZL"], nigeria: ["ng", "NGA"],
+    norway: ["no", "NOR"], panama: ["pa", "PAN"], paraguay: ["py", "PAR"],
+    peru: ["pe", "PER"], poland: ["pl", "POL"], portugal: ["pt", "POR"],
+    qatar: ["qa", "QAT"], "republic of ireland": ["ie", "IRL"], ireland: ["ie", "IRL"],
+    romania: ["ro", "ROU"], russia: ["ru", "RUS"], "saudi arabia": ["sa", "KSA"],
+    scotland: ["gb-sct", "SCO"], senegal: ["sn", "SEN"], serbia: ["rs", "SRB"],
+    slovakia: ["sk", "SVK"], slovenia: ["si", "SVN"], "south africa": ["za", "RSA"],
+    spain: ["es", "ESP"], sweden: ["se", "SWE"], switzerland: ["ch", "SUI"],
+    tunisia: ["tn", "TUN"], turkey: ["tr", "TUR"], turkiye: ["tr", "TUR"],
+    ukraine: ["ua", "UKR"], "united states": ["us", "USA"], usa: ["us", "USA"],
+    "united states of america": ["us", "USA"], uruguay: ["uy", "URU"],
+    venezuela: ["ve", "VEN"], wales: ["gb-wls", "WAL"], algeria: ["dz", "ALG"],
+    "cape verde": ["cv", "CPV"], "el salvador": ["sv", "SLV"],
+    guatemala: ["gt", "GUA"], curacao: ["cw", "CUW"], uzbekistan: ["uz", "UZB"],
+    "united arab emirates": ["ae", "UAE"]
   };
 
-  // Devuelve un código de país de 2-3 letras para mostrar en el chip.
-  function countryCode(name) {
-    if (!name) return "?";
+  // Devuelve { a2, a3 } para un nombre de selección, o null si es desconocido.
+  function countryInfo(name) {
+    if (!name) return null;
     var key = name.trim().toLowerCase();
-    if (/^por definir$/.test(key) || key === "tbd") return "?";
-    if (COUNTRY_CODES[key]) return COUNTRY_CODES[key];
-    // Fallback: primeras 3 letras alfabéticas en mayúscula.
+    if (/^por definir$/.test(key) || key === "tbd") return null;
+    var hit = COUNTRIES[key];
+    return hit ? { a2: hit[0], a3: hit[1] } : null;
+  }
+
+  // Código corto para el chip (con o sin coincidencia en el mapa).
+  function countryCode(name) {
+    var info = countryInfo(name);
+    if (info) return info.a3;
+    if (!name) return "?";
     var letters = name.replace(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g, "");
     return (letters.slice(0, 3) || "?").toUpperCase();
   }
@@ -340,6 +354,7 @@
   function matchCard(m, tz) {
     var kind = classify(m);
     var card = el("article", "match");
+    if (kind === "live") card.classList.add("is-live");
 
     var time = el("div", "match-time");
     time.appendChild(el("span", "hh", fmtTime(m.date)));
@@ -352,8 +367,13 @@
     card.appendChild(teams);
 
     var meta = el("div", "match-meta");
-    var badge = el("span", "badge " + kind,
-      kind === "live" ? "● EN VIVO" : kind === "finished" ? "Final" : "Programado");
+    var badge = el("span", "badge " + kind);
+    if (kind === "live") {
+      badge.appendChild(el("span", "dot"));
+      badge.appendChild(document.createTextNode("En vivo"));
+    } else {
+      badge.textContent = kind === "finished" ? "Final" : "Programado";
+    }
     meta.appendChild(badge);
     if (m.venue) meta.appendChild(el("span", "venue", m.venue));
     if (m.round) meta.appendChild(el("span", "round", String(m.round)));
@@ -370,12 +390,39 @@
       opponent.score != null &&
       team.score > opponent.score;
     if (isWinner) row.classList.add("winner");
-    var code = el("span", "flag", countryCode(team.name));
-    code.setAttribute("title", team.name);
-    row.appendChild(code);
+    row.appendChild(flagNode(team.name));
     row.appendChild(el("span", "name", team.name));
     if (team.score != null) row.appendChild(el("span", "score", String(team.score)));
     return row;
+  }
+
+  // Bandera nacional (dominio público) vía flagcdn, con chip de código como
+  // respaldo si la imagen falla. Sin assets de FIFA.
+  function flagNode(name) {
+    var wrap = el("span", "flag-wrap");
+    var info = countryInfo(name);
+    var chip = el("span", "flag-chip", countryCode(name));
+    if (!info) {
+      wrap.appendChild(chip);
+      return wrap;
+    }
+    var img = document.createElement("img");
+    img.className = "flag-img";
+    img.loading = "lazy";
+    img.width = 30;
+    img.height = 20;
+    img.alt = name;
+    img.title = name;
+    img.src = "https://flagcdn.com/w40/" + info.a2 + ".png";
+    img.srcset = "https://flagcdn.com/w80/" + info.a2 + ".png 2x";
+    chip.style.display = "none";
+    img.addEventListener("error", function () {
+      img.remove();
+      chip.style.display = "";
+    });
+    wrap.appendChild(img);
+    wrap.appendChild(chip);
+    return wrap;
   }
 
   function setState(msg, isError) {
@@ -424,9 +471,9 @@
   }
 
   function bindUI() {
-    document.querySelectorAll(".filter").forEach(function (b) {
+    document.querySelectorAll(".filters .chip").forEach(function (b) {
       b.addEventListener("click", function () {
-        document.querySelectorAll(".filter").forEach(function (x) {
+        document.querySelectorAll(".filters .chip").forEach(function (x) {
           x.classList.remove("is-active");
           x.setAttribute("aria-selected", "false");
         });
@@ -439,10 +486,29 @@
     document.getElementById("refresh-btn").addEventListener("click", function () {
       refresh(true).then(scheduleNext);
     });
+    bindModal();
     // Pausamos el refresco cuando la pestaña no está visible.
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) clearTimeout(state.timer);
       else refresh(false).then(scheduleNext);
+    });
+  }
+
+  // Modal de lineamientos (abrir/cerrar con botón, backdrop y tecla Esc).
+  function bindModal() {
+    var modal = document.getElementById("legal-modal");
+    if (!modal) return;
+    function open() { modal.hidden = false; document.body.style.overflow = "hidden"; }
+    function close() { modal.hidden = true; document.body.style.overflow = ""; }
+    ["open-legal", "open-legal-2"].forEach(function (id) {
+      var b = document.getElementById(id);
+      if (b) b.addEventListener("click", open);
+    });
+    modal.querySelectorAll("[data-close]").forEach(function (b) {
+      b.addEventListener("click", close);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !modal.hidden) close();
     });
   }
 
