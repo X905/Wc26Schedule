@@ -8,7 +8,12 @@
     name="description"
     content="Calendario y resultados en vivo de los partidos del torneo mundial de fútbol 2026. Proyecto independiente, no afiliado a la FIFA."
   />
-  <!-- Sin CDNs ni assets externos: tipografía del sistema y banderas con emoji Unicode -->
+  <!-- Sin CDNs ni assets externos: tipografía del sistema y chips de código -->
+  <!-- Favicon inline (data URI) para evitar una petición a /favicon.ico -->
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232f9e44'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='white' font-family='sans-serif'%3E26%3C/text%3E%3C/svg%3E"
+  />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -58,8 +63,9 @@
       </li>
       <li>
         No se utilizan logotipos, emblemas, mascotas, tipografías oficiales ni
-        ningún material gráfico protegido. Las banderas se representan con
-        <strong>caracteres emoji Unicode</strong>, no con archivos de imagen.
+        ningún material gráfico protegido. Los países se identifican con un
+        <strong>chip de código de texto</strong> (p. ej. ARG, MEX), no con
+        archivos de imagen.
       </li>
       <li>
         El calendario (fechas, horas, sedes y equipos) se compone de

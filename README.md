@@ -14,7 +14,8 @@ automáticamente** consultando APIs públicas de datos deportivos.
 - 🔴 Estado en vivo / programado / finalizado, con auto-refresco (60 s, o 30 s si
   hay partidos en curso).
 - 🌍 Horas mostradas en la **zona horaria local** del visitante.
-- 🚩 Banderas con **emoji Unicode** (sin descargar imágenes).
+- 🚩 Países con **chip de código de texto** (ARG, MEX…), sin descargar imágenes
+  ni depender de emojis de bandera (que Windows no renderiza).
 - 🧱 **Sin assets externos**: sin CDNs, sin fuentes de terceros, sin trackers.
   Las únicas peticiones de red son a las APIs de datos (JSON).
 - ♻️ Cadena de respaldos: TheSportsDB → ESPN → `data/schedule.json` local.

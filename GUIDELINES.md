@@ -18,8 +18,9 @@ ofrecer una landing útil con el calendario y los resultados del Mundial 2026
 - **Nombres descriptivos**: «Mundial 2026», «torneo mundial de fútbol»,
   nombres de selecciones y estadios, citados con fin informativo (uso nominativo
   justo de la marca).
-- **Banderas como emoji Unicode**: son caracteres tipográficos del sistema, no
-  archivos de imagen ni assets descargados.
+- **Países como chip de código de texto** (ARG, MEX, FRA…): texto renderizado
+  con CSS, no archivos de imagen ni assets descargados. (Se evitó el emoji de
+  bandera porque Windows no lo incluye en su fuente y se vería en blanco.)
 - **Datos de APIs públicas** de proveedores deportivos, respetando sus términos
   de uso y límites de peticiones.
 
@@ -44,8 +45,8 @@ Para reducir riesgo legal **y** mejorar privacidad/rendimiento, este proyecto:
 - **No usa CDNs de fuentes** (Google Fonts, etc.); solo tipografía del sistema
   (`system-ui`).
 - **No incrusta** iframes, trackers ni scripts de terceros.
-- Representa banderas con **emoji Unicode** generados desde el código ISO del
-  país (ver `flagEmoji()` en `js/app.js`).
+- Representa países con un **chip de código de texto** derivado del nombre de
+  la selección (ver `countryCode()` en `js/app.js`).
 - Las únicas peticiones de red salientes son **a las APIs de datos** (JSON), no
   a recursos gráficos.
 
@@ -83,7 +84,7 @@ Reglas:
 ## 6. Lista de verificación antes de publicar
 
 - [ ] Ningún logo, emblema, mascota o tipografía oficial en el repo o la página.
-- [ ] Ninguna imagen/foto con derechos; banderas solo por emoji.
+- [ ] Ninguna imagen/foto con derechos; países solo por chip de código de texto.
 - [ ] Sin CDNs de fuentes ni assets de terceros.
 - [ ] Descargo de no afiliación visible.
 - [ ] Atribución de la fuente de datos visible.
