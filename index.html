@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendario de Partidos · Mundial 2026 (no oficial)</title>
+  <meta
+    name="description"
+    content="Calendario y resultados en vivo de los partidos del torneo mundial de fútbol 2026. Proyecto independiente, no afiliado a la FIFA."
+  />
+  <!-- Sin CDNs ni assets externos: tipografía del sistema y banderas con emoji Unicode -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <p class="kicker">Proyecto independiente · datos públicos</p>
+      <h1>Calendario del Mundial de Fútbol 2026</h1>
+      <p class="subtitle">
+        Horarios y resultados de los partidos, actualizados automáticamente.
+        Las horas se muestran en tu zona horaria local.
+      </p>
+      <p class="disclaimer-inline">
+        Sitio no oficial, sin afiliación ni patrocinio de la FIFA. Marcas y
+        logotipos pertenecen a sus respectivos dueños. Consulta los
+        <a href="#legal">lineamientos de uso</a>.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="controls" aria-label="Filtros y estado">
+      <div class="filters" role="tablist" aria-label="Filtrar partidos">
+        <button class="filter is-active" data-filter="all" role="tab" aria-selected="true">Todos</button>
+        <button class="filter" data-filter="live" role="tab" aria-selected="false">En vivo</button>
+        <button class="filter" data-filter="upcoming" role="tab" aria-selected="false">Próximos</button>
+        <button class="filter" data-filter="finished" role="tab" aria-selected="false">Finalizados</button>
+      </div>
+      <div class="status">
+        <span id="source-label" class="source-label" title="Origen de los datos">Cargando…</span>
+        <button id="refresh-btn" class="refresh-btn" title="Actualizar ahora" aria-label="Actualizar ahora">⟳</button>
+        <span id="last-updated" class="last-updated"></span>
+      </div>
+    </section>
+
+    <div id="state" class="state" role="status" aria-live="polite"></div>
+
+    <section id="matches" class="matches" aria-label="Lista de partidos"></section>
+  </main>
+
+  <section id="legal" class="legal container">
+    <h2>Lineamientos de uso y derechos de autor</h2>
+    <ul>
+      <li>
+        Este es un proyecto <strong>independiente y no oficial</strong>. No está
+        afiliado, asociado, autorizado ni patrocinado por la FIFA ni por ningún
+        organismo del torneo.
+      </li>
+      <li>
+        No se utilizan logotipos, emblemas, mascotas, tipografías oficiales ni
+        ningún material gráfico protegido. Las banderas se representan con
+        <strong>caracteres emoji Unicode</strong>, no con archivos de imagen.
+      </li>
+      <li>
+        El calendario (fechas, horas, sedes y equipos) se compone de
+        <strong>datos factuales</strong>, los cuales no son objeto de derechos
+        de autor. Los resultados en vivo provienen de APIs públicas de datos
+        deportivos; cada proveedor mantiene la titularidad de su servicio.
+      </li>
+      <li>
+        Las marcas «FIFA», «Copa Mundial», nombres de equipos y similares
+        pertenecen a sus respectivos titulares y se citan únicamente con fines
+        descriptivos e informativos.
+      </li>
+      <li>
+        Consulta <a href="GUIDELINES.md">GUIDELINES.md</a> para la guía completa
+        de cumplimiento.
+      </li>
+    </ul>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>
+        Hecho con datos públicos. Sin afiliación oficial. Verifica siempre los
+        horarios con la fuente oficial del torneo.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

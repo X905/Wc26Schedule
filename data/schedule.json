@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "purpose": "Respaldo local usado solo si las APIs publicas no responden.",
+    "nature": "Datos factuales (fechas, sedes, anfitriones). Los datos factuales no estan sujetos a derechos de autor.",
+    "illustrative": true,
+    "note": "Los emparejamientos definitivos provienen de la API en vivo. Aqui se listan hitos confirmados (anfitriones y sedes) y se deja 'Por definir' lo no confirmado.",
+    "tournament": "Torneo mundial de futbol 2026",
+    "hosts": ["Canada", "Estados Unidos", "Mexico"],
+    "format": "48 equipos, 104 partidos, 11 jun - 19 jul 2026",
+    "timezoneNote": "kickoffUTC en UTC; la pagina lo convierte a la hora local del visitante."
+  },
+  "matches": [
+    {
+      "id": "wc26-opening",
+      "kickoffUTC": "2026-06-11T22:00:00Z",
+      "home": "Mexico",
+      "homeCode": "MX",
+      "away": "Por definir",
+      "awayCode": null,
+      "venue": "Estadio Azteca, Ciudad de Mexico",
+      "round": "Fase de grupos - J1"
+    },
+    {
+      "id": "wc26-usa-g1",
+      "kickoffUTC": "2026-06-12T20:00:00Z",
+      "home": "Estados Unidos",
+      "homeCode": "US",
+      "away": "Por definir",
+      "awayCode": null,
+      "venue": "SoFi Stadium, Los Angeles",
+      "round": "Fase de grupos - J1"
+    },
+    {
+      "id": "wc26-can-g1",
+      "kickoffUTC": "2026-06-12T23:00:00Z",
+      "home": "Canada",
+      "homeCode": "CA",
+      "away": "Por definir",
+      "awayCode": null,
+      "venue": "BMO Field, Toronto",
+      "round": "Fase de grupos - J1"
+    },
+    {
+      "id": "wc26-final",
+      "kickoffUTC": "2026-07-19T19:00:00Z",
+      "home": "Por definir",
+      "homeCode": null,
+      "away": "Por definir",
+      "awayCode": null,
+      "venue": "MetLife Stadium, Nueva Jersey",
+      "round": "Final"
+    }
+  ]
+}
